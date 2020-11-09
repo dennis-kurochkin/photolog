@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=5">
+    <title>Photolog</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!-- BEGIN header -->
+        <header class="header">
+            <h1 class="header__title">Photolog</h1>
+            <nav class="header__nav">
+                <ul class="header__nav-list">
+                    <li class="header__item">
+                        <button type="button" class="js-catalog-btn header__link">Каталог</button>
+                    </li>
+                    <li class="header__item">
+                        <button type="button" class="js-favorites-btn header__link">Избранное</button>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <!-- END header -->
+
+        <!-- BEGIN main -->
+        <main class="js-main main">
+
+            <!-- BEGIN user -->
+            <article class="user">
+
+                <div class="user__main">
+                    <header class="user__info">
+                        <h2 class="user__title">Bret</h2>
+                        <p class="user__email">Sincere@april.biz</p>
+                    </header>
+                    <button class="js-user-toggle btn-toggle user__btn-toggle" title="Показать альбомы пользователя">
+                        <img src="images/icon-arrow-down.svg" width="24" height="24" alt="" aria-hidden="true">
+                    </button>
+                </div>
+
+                <div class="user__albums">
+                    <h3 class="user__albums-title">Альбомы:</h3>
+
+                    <!-- BEGIN album -->
+                    <div class="album user__album">
+                        <div class="album__main">
+                            <h3 class="album__title">Lorem, ipsum dolor</h3>
+                            <button class="js-album-toggle btn-toggle-sm album__btn-toggle" title="Показать альбомы пользователя">
+                                <img src="images/icon-arrow-down.svg" width="16" height="16" alt="" aria-hidden="true">
+                            </button>
+                        </div>
+
+                        <!-- BEGIN gallery -->
+                        <div class="album__gallery">
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                        </div>
+                        <!-- END gallery -->
+
+                    </div>
+                    <!-- END album -->
+
+                    <!-- BEGIN album -->
+                    <div class="album user__album">
+                        <div class="album__main">
+                            <h3 class="album__title">Lorem, ipsum dolor</h3>
+                            <button class="js-album-toggle btn-toggle-sm album__btn-toggle" title="Показать альбомы пользователя">
+                                <img src="images/icon-arrow-down.svg" width="16" height="16" alt="" aria-hidden="true">
+                            </button>
+                        </div>
+
+                        <!-- BEGIN gallery -->
+                        <div class="album__gallery">
+
+                            <figure class="album__photo photo">
+                                <button class="photo__btn-favorite">
+                                    <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+                                </button>
+                                <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+                            </figure>
+
+                        </div>
+                        <!-- END gallery -->
+
+                    </div>
+                    <!-- END album -->
+
+                </div>
+
+            </article>
+            <!-- END user -->
+
+        </main>
+        <!-- END main -->
+
+    </div>
+
+    <script src="./app.js"></script>
+
+</body>
+
+</html>

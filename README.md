@@ -28,6 +28,7 @@
   - [О проекте](#о-проекте)
     - [Что я использовал](#что-я-использовал)
   - [Полезные ссылки](#полезные-ссылки)
+  - [TODO](#todo)
 
 
 
@@ -41,8 +42,8 @@
 
 ### Что я использовал
 
-* []()
-* []()
+* ES6 (IIFE, Async / Await, Classes)
+* Sass для стилей
 * []()
 
 
@@ -51,6 +52,14 @@
 📧 Мой e-mail:  dennis.kurochkin@gmail.com
 
 💼 Ссылка на проект: [https://github.com/dennis-kurochkin/photolog](https://github.com/dennis-kurochkin/photolog)
+
+
+## TODO
+
+- [ ] Get and list users in the UI
+- [ ] Get and list albums for users in the UI
+- [ ] Get and list photos for albums in the UI
+- [ ] Add favorite photos thing
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
