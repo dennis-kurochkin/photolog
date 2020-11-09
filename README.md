@@ -57,16 +57,14 @@
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/dennis-kurochkin/repo.svg?style=flat-square
-[contributors-url]: https://github.com/dennis-kurochkin/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/dennis-kurochkin/repo.svg?style=flat-square
-[forks-url]: https://github.com/dennis-kurochkin/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/dennis-kurochkin/repo.svg?style=flat-square
-[stars-url]: https://github.com/dennis-kurochkin/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/dennis-kurochkin/repo.svg?style=flat-square
-[issues-url]: https://github.com/dennis-kurochkin/repo/issues
-[license-shield]: https://img.shields.io/github/license/dennis-kurochkin/repo.svg?style=flat-square
-[license-url]: https://github.com/dennis-kurochkin/repo/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/dennis-kurochkin
+[contributors-shield]: https://img.shields.io/github/contributors/dennis-kurochkin/photolog.svg?style=flat-square
+[contributors-url]: https://github.com/dennis-kurochkin/photolog/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/dennis-kurochkin/photolog.svg?style=flat-square
+[forks-url]: https://github.com/dennis-kurochkin/photolog/network/members
+[stars-shield]: https://img.shields.io/github/stars/dennis-kurochkin/photolog.svg?style=flat-square
+[stars-url]: https://github.com/dennis-kurochkin/photolog/stargazers
+[issues-shield]: https://img.shields.io/github/issues/dennis-kurochkin/photolog.svg?style=flat-square
+[issues-url]: https://github.com/dennis-kurochkin/photolog/issues
+[license-shield]: https://img.shields.io/github/license/dennis-kurochkin/photolog.svg?style=flat-square
+[license-url]: https://github.com/dennis-kurochkin/photolog/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
