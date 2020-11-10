@@ -42,8 +42,9 @@
 
 ### Что я использовал
 
-* ES6 (IIFE, Async / Await, Classes)
-* Sass для стилей
+* ES6 (IIFE, Async / Await, Classes, Template Strings)
+* JSDoc
+* Sass
 * []()
 
 
@@ -57,7 +58,7 @@
 ## TODO
 
 - [x] Get and list users in the UI
-- [ ] Get and list albums for users in the UI
+- [x] Get and list albums for users in the UI
 - [ ] Get and list photos for albums in the UI
 - [ ] Add favorite photos thing
 

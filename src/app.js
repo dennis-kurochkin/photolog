@@ -1,71 +1,100 @@
-window.addEventListener('DOMContentLoaded', () => {
 
-  const model = (() => {
+/**
+ * Represents a user.
+ */
+class User {
+  constructor(id, username, email) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+  }
 
-    class User {
-      constructor(id, username, email) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-      }
+  /**
+   * Gets albums for the user.
+   */
+  async getAlbums() {
+    try {
+      const response = await fetch(`https://json.medrating.org/albums?userId=${this.id}`)
+      const data = await response.json();
 
-      async getAlbums() {
-        try {
-          await fetch(`https://json.medrating.org/albums?userId=${this.id}`)
-            .then(response => response.json())
-            .then(data => this.albums = data.map(album => new Album(album.userId, album.id, album.title)));
-          
-            return this.albums;
-        } catch (e) {
-          console.error(e);
-        }
-      }
+      this.albums = data.map(album => new Album(album.userId, album.id, album.title));
+
+      return this.albums;
+    } catch (e) {
+      console.error(e);
     }
+  }
+}
 
-    class Album {
-      constructor(userId, id, title) {
-        this.userId = userId;
-        this.id = id;
-        this.title = title;
-      }
+/**
+ * Represents an album of the user.
+ */
+class Album {
+  constructor(userId, id, title) {
+    this.userId = userId;
+    this.id = id;
+    this.title = title;
+  }
 
-      async getPhotos() {
+  /**
+   * Gets photos for the album.
+   */
+  async getPhotos() {
 
-      }
+  }
+}
+
+/**
+ * App main model.
+ */
+const model = (() => {
+  const getUsers = async () => {
+    try {
+      const response = await fetch('https://json.medrating.org/users/');
+      const data = await response.json();
+
+      return data.map(
+        user => user.username && user.email ? new User(user.id, user.username, user.email) : null
+      ).filter(Boolean);
+
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    const getUsers = async () => {
-      try {
-        return await fetch('https://json.medrating.org/users/')
-          .then(response => response.json())
-          .then(data => data.map(
-            user => user.username && user.email ? new User(user.id, user.username, user.email) : null
-          ))
-          .then(data => data.filter(Boolean));
-      } catch (e) {
-        console.error(e);
-      }
-    }
+  // Returned object by IIFE
+  return { getUsers }
 
-    return { getUsers }
+})();
 
-  })();
+/**
+ * View layer of the app
+ */
+const view = (() => {
 
-  const view = (() => {
+  /**
+   * DOM elements.
+   */
+  const elements = {
+    main: document.querySelector('.js-main')
+  }
 
-    const elements = {
-      main: document.querySelector('.js-main')
-    }
+  /**
+   * DOM selectors.
+   */
+  const selectors = {
+    user: 'js-user',
+    albumsToggleButton: 'js-user-toggle'
+  }
 
-    const selectors = {
-
-    }
-
-    const renderAlbums = async user => {
-      const albums = await user.getAlbums();
-
-      const markup = albums.reduce((albums, album) => {
-        return albums += /*html*/`
+  /**
+   * Returns markup of albums for the provided user.
+   * @param {User} user 
+   * @returns {string} albums markup
+   */
+  const getAlbumsMarkup = async user => {
+    const albums = await user.getAlbums();
+    const markup = await albums.reduce((albums, album) => albums += /*html*/`
           <div class="album user__album" data-id="${album.id}">
             <div class="album__main">
               <h3 class="album__title">${album.title}</h3>
@@ -74,22 +103,26 @@ window.addEventListener('DOMContentLoaded', () => {
               </button>
             </div>
           </div>
-        `;
-      }, '');
-    }
+        `, '');
 
-    const renderUsers = users => {
-      users.forEach(user => {
-        const albums = renderAlbums(user);
+    return markup;
+  }
 
-        const markup = /*html*/`
-            <article class="user" data-id="${user.id}">
+  /**
+   * Renders users in the DOM using provided users.
+   * @param {array} users 
+   */
+  const renderUsers = async users => {
+    for (const user of users) {
+      const albums = await getAlbumsMarkup(user);
+      const markup = /*html*/`
+            <article class="${selectors.user} user" data-id="${user.id}">
               <div class="user__main">
                 <header class="user__info">
                   <h2 class="user__title">${user.username}</h2>
                   <p class="user__email">${user.email}</p>
                 </header>
-                <button class="js-user-toggle btn-toggle user__btn-toggle" title="Показать альбомы пользователя">
+                <button class="${selectors.albumsToggleButton} btn-toggle user__btn-toggle" title="Показать альбомы пользователя">
                   <img src="images/icon-arrow-down.svg" width="24" height="24" alt="" aria-hidden="true">
                 </button>
               </div>
@@ -100,32 +133,71 @@ window.addEventListener('DOMContentLoaded', () => {
             </article>
         `;
 
-        elements.main.insertAdjacentHTML('beforeend', markup);
-      });
+      elements.main.insertAdjacentHTML('beforeend', markup);
     }
+  }
 
-    return {
-      elements,
-      selectors,
-      renderUsers
+  /**
+   * Renders photos for the passed album.
+   * @param {Album} album 
+   */
+  const renderPhotos = album => {
+    const markup = /*html*/`
+      <figure class="album__photo photo">
+        <button class="photo__btn-favorite">
+          <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+        </button>
+        <img src="https://via.placeholder.com/600/14ba42" alt="et qui rerum">
+      </figure>
+    `;
+  }
+
+  /**
+   * Toggles user albums visibility.
+   * @param {number} userId User ID
+   */
+  const toggleUserAlbums = userId => {
+    document.querySelector(`.${selectors.user}[data-id="${userId}"]`).classList.toggle('open');
+  }
+
+  // Returned object by IIFE
+  return {
+    elements,
+    selectors,
+    renderUsers,
+    toggleUserAlbums
+  }
+})();
+
+/**
+ * Main app controller
+ */
+const photolog = (() => {
+
+  return {
+    init: async () => {
+
+      view.elements.main.innerHTML = '';
+
+      const users = await model.getUsers();
+
+      view.renderUsers(users);
+
+      view.elements.main.addEventListener('click', e => {
+        switch (true) {
+          case e.target.closest(`.${view.selectors.albumsToggleButton}`) && true:
+            return view.toggleUserAlbums(e.target.closest(`.${view.selectors.user}`).dataset.id);
+          default:
+            break;
+        }
+      })
+
     }
-  })();
+  }
 
-  const photolog = (() => {
+})(model, view);
 
-    return {
-      init: async () => {
 
-        view.elements.main.innerHTML = '';
-        const users = await model.getUsers();
-
-        view.renderUsers(users);
-
-      }
-    }
-
-  })(model, view);
-
+window.addEventListener('DOMContentLoaded', () => {
   photolog.init();
-
-})
+});

@@ -493,6 +493,15 @@ body {
           box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
+.user.open .user__albums {
+  display: block;
+}
+
+.user.open .user__btn-toggle {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
 .user__main {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -503,7 +512,6 @@ body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  margin-bottom: 2rem;
 }
 
 .user__title {
@@ -515,6 +523,11 @@ body {
   margin: 0;
 }
 
+.user__albums {
+  display: none;
+  margin-top: 2rem;
+}
+
 .user__albums-title {
   margin: 0 0 1rem;
   font-size: 1.5rem;
@@ -524,6 +537,16 @@ body {
   margin-top: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--color-border);
+}
+
+.album.open .album__gallery {
+  display: -ms-grid;
+  display: grid;
+}
+
+.album.open .album__btn-toggle {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 
 .album__main {
@@ -543,8 +566,7 @@ body {
 }
 
 .album__gallery {
-  display: -ms-grid;
-  display: grid;
+  display: none;
   -ms-grid-columns: (minmax(160px, 1fr))[auto-fill];
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   padding-top: 1rem;
