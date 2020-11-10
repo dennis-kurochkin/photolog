@@ -177,8 +177,6 @@ const photolog = (() => {
   return {
     init: async () => {
 
-      view.elements.main.innerHTML = '';
-
       const users = await model.getUsers();
 
       view.renderUsers(users);
