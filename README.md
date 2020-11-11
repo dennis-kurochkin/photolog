@@ -10,20 +10,13 @@
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
 
-<!-- PROJECT LOGO -->
-## Photolog
-
 Интерактивный список пользователей, их альбомов и фотографий на нативном JavaScript.
 
 <a href="https://github.com/dennis-kurochkin/photolog">🔍 Посмотреть как работает</a>
 
 
-
-
-<!-- Содержание -->
 ## Содержание
 
-- [Photolog](#photolog)
 - [Содержание](#содержание)
 - [О проекте](#о-проекте)
   - [Что я использовал](#что-я-использовал)
@@ -31,11 +24,7 @@
 - [TODO](#todo)
 
 
-
-<!-- ABOUT THE PROJECT -->
 ## О проекте
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 Выводит интерактивный список пользователей, получаемый с помощью API. Приложение позволяет просматривать фотоальбомы и фотографии пользователей, а также добавлять фотографии в избранные. Можно перейти как на страницу каталога, так и на страницу избранных фотографий.
 
@@ -45,7 +34,6 @@
 * ES6 (IIFE, Async / Await, Classes, Template Strings)
 * JSDoc
 * Sass
-* []()
 
 
 ## Полезные ссылки
@@ -68,7 +56,6 @@
 - [x] Works in chrome and firefox
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/dennis-kurochkin/photolog.svg?style=flat-square
 [contributors-url]: https://github.com/dennis-kurochkin/photolog/graphs/contributors
