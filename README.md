@@ -63,10 +63,10 @@
 - [x] Add photo title
 - [x] Add favorite photos thing, write 'em to local storage
 - [x] Add pop-up by click to every image 
-- [ ] Add clickable 'Catalog' and 'Favorite' links
-- [ ] No page reloads
+- [x] Add clickable 'Catalog' and 'Favorite' links
+- [x] No page reloads
 - [ ] In favorites page make a list of photos with just titles, on click show the photo full screen, add star there too
-- [ ] Works in chrome and firefox
+- [x] Works in chrome and firefox
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

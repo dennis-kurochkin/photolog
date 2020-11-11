@@ -50,19 +50,23 @@ body {
     padding: 1rem 3rem;
     font-weight: 600;
     color: var(--color-text-invert);
-    background: var(--color-text);
+    background: lighten(#000, 50%);
     border: 0;
     border-radius: 0;
     transition: opacity .3s;
-
+    
     &:hover,
     &:focus {
       opacity: 0.8;
     }
-
+    
     &:focus {
       outline: 2px dashed var(--color-black);
       outline-offset: 2px;
+    }
+    
+    &.active {
+      background: var(--color-text);
     }
   }
 }

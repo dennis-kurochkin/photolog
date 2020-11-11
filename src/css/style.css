@@ -273,7 +273,7 @@ body {
   padding: 1rem 3rem;
   font-weight: 600;
   color: var(--color-text-invert);
-  background: var(--color-text);
+  background: gray;
   border: 0;
   border-radius: 0;
   -webkit-transition: opacity .3s;
@@ -287,6 +287,10 @@ body {
 .header__link:focus {
   outline: 2px dashed var(--color-black);
   outline-offset: 2px;
+}
+
+.header__link.active {
+  background: var(--color-text);
 }
 
 .main {

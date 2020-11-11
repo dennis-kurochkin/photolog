@@ -1,5 +1,9 @@
+const TAB_CATALOG = 'catalog';
+const TAB_FAVORITES = 'favorites';
+
 /** Global app state. */
 const state = {
+  openedTab: TAB_CATALOG,
   favorites: []
 };
 
@@ -73,6 +77,14 @@ class Album {
       console.error(e);
     }
   }
+
+  /**
+   * Gets photo by ID.
+   * @param {number} photoOd Photo ID
+   */
+  getPhoto(photoId) {
+    return this.photos.find(photo => photo.id === photoId);
+  }
 }
 
 /**
@@ -145,13 +157,17 @@ class View {
   static elements = {
     app: document.querySelector('#app'),
     wrapper: document.querySelector('.js-wrapper'),
-    main: document.querySelector('.js-main')
+    main: document.querySelector('.js-main'),
+    catalogButton: document.querySelector('.js-catalog-btn'),
+    favoritesButton: document.querySelector('.js-favorites-btn')
   };
 
   /**
-  * DOM selectors.
-  */
+   * DOM selectors.
+   */
   static selectors = {
+    catalogButton: 'js-catalog-btn',
+    favoritesButton: 'js-favorites-btn',
     user: 'js-user',
     album: 'js-album',
     photo: 'js-photo',
@@ -159,9 +175,28 @@ class View {
     albumsToggleButton: 'js-user-toggle',
     photosToggleButton: 'js-album-toggle',
     favoriteToggleButton: 'js-toggle-favorite',
+    favoriteListItem: 'js-favorite-item',
     openPhotoLink: 'js-open-photo',
     popup: 'js-popup',
     popupCloseButton: 'js-popup-close',
+  }
+
+  static clearMain() {
+    return this.elements.main.innerHTML = '';
+  }
+
+  static openCatalogTab(users) {
+    this.clearMain();
+    this.elements.catalogButton.classList.add('active');
+    this.elements.favoritesButton.classList.remove('active');
+    this.renderUsers(users);
+  }
+
+  static openFavoritesTab(favorites) {
+    this.clearMain();
+    this.elements.favoritesButton.classList.add('active');
+    this.elements.catalogButton.classList.remove('active');
+    this.renderFavorites(favorites);
   }
 
   /**
@@ -211,6 +246,28 @@ class View {
     });
   }
 
+  static renderFavorites(favorites) {
+    const favoritesMarkup = favorites.reduce((favorites, favorite) => favorites += /*html*/`
+      <div class="${this.selectors.favoriteListItem} album user__album" data-id="${favorite.id}">
+        <div class="album__main">
+          <h3 class="album__title">
+            <a href="${favorite.url}" class="${this.selectors.openPhotoLink}" title="${favorite.title}">${favorite.title}</a>
+          </h3>
+        </div>
+      </div>
+      `, '');
+
+    const markup = /*html*/`
+      <article class="user open">
+        <div class="user__albums" style="margin-top: 0;">
+          ${favoritesMarkup}
+        </div>
+      </article>
+    `;
+
+    this.elements.main.insertAdjacentHTML('afterbegin', markup);
+  }
+
   /**
    * Renders photos for the passed album.
    * @param {Album} album 
@@ -218,7 +275,7 @@ class View {
   static getPhotosMarkup(album) {
     return album.photos.reduce((photos, photo) => photos += /*html*/`
       <figure 
-        class="${this.selectors.photo} ${state.favorites.find(id => photo.id === id) ? 'favorite' : ''} album__photo photo" 
+        class="${this.selectors.photo} ${state.favorites.find(statePhoto => photo.id === statePhoto.id) ? 'favorite' : ''} album__photo photo" 
         data-id="${photo.id}"
       >
         <button class="${this.selectors.favoriteToggleButton} photo__btn-favorite">
@@ -322,15 +379,13 @@ const photolog = (() => {
   const toggleFavoritePhoto = button => {
     const element = button.closest(`.${View.selectors.photo}`);
     const photoId = parseInt(element.dataset.id);
-    const isFavorite = state.favorites.find(id => photoId === id);
+    const albumId = parseInt(element.closest(`.${View.selectors.album}`).dataset.id);
+    const userId = parseInt(element.closest(`.${View.selectors.user}`).dataset.id);
+    const photo = Model.getUser(userId).getAlbum(albumId).getPhoto(photoId);
+    const photoIndexInState = state.favorites.findIndex(statePhoto => photo.id === statePhoto.id);
 
-    if (isFavorite) {
-      const index = state.favorites.findIndex(id => photoId === id);
-
-      state.favorites.splice(index, 1);
-    } else {
-      state.favorites.push(photoId)
-    }
+    photoIndexInState !== -1 ?
+      state.favorites.splice(photoIndexInState, 1) : state.favorites.push(photo);
 
     persistFavorites();
 
@@ -353,6 +408,18 @@ const photolog = (() => {
    */
   const delegateEvents = e => {
     switch (true) {
+
+      // Catalog button clicked
+      case e.target.matches(`.${View.selectors.catalogButton}`):
+        state.openedTab === TAB_FAVORITES ? View.openCatalogTab(Model.users) : null;
+        state.openedTab = TAB_CATALOG;
+        break;
+
+      // Favorites button clicked
+      case e.target.matches(`.${View.selectors.favoritesButton}`):
+        state.openedTab === TAB_CATALOG ? View.openFavoritesTab(state.favorites) : null;
+        state.openedTab = TAB_FAVORITES;
+        break;
 
       // Open albums button clicked
       case e.target.closest(`.${View.selectors.albumsToggleButton}`) && true:
