@@ -50,8 +50,7 @@
 
 ## Полезные ссылки
 
-📧 Мой e-mail:  dennis.kurochkin@gmail.com
-
+📧 Мой e-mail:  dennis.kurochkin@gmail.com <br />
 💼 Ссылка на проект: [https://github.com/dennis-kurochkin/photolog](https://github.com/dennis-kurochkin/photolog)
 
 
