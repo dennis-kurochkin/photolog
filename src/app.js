@@ -251,10 +251,16 @@ class View {
  */
 const photolog = (() => {
 
+  /**
+   * Persists favorite photos in local storage.
+   */
   const persistFavorites = () => {
     localStorage.setItem('favorites', JSON.stringify(state.favorites));
   }
 
+  /**
+   * Retrieves favorites from local storage.
+   */
   const retrieveFavorites = () => {
     const favorites = JSON.parse(localStorage.getItem('favorites'));
 
@@ -265,19 +271,20 @@ const photolog = (() => {
    * Gets album photos and updates the UI.
    * @param {Event} e 
    */
-  const getAlbumPhotos = async (e) => {
-    const targetButton = e.target.closest(`.${View.selectors.album}`);
-    const albumId = parseInt(targetButton.closest(`.${View.selectors.album}`).dataset.id);
-    const userId = parseInt(targetButton.closest(`.${View.selectors.user}`).dataset.id);
+  const getAlbumPhotos = async (button) => {
+    const albumId = parseInt(button.closest(`.${View.selectors.album}`).dataset.id);
+    const userId = parseInt(button.closest(`.${View.selectors.user}`).dataset.id);
     const album = Model.getUser(userId).getAlbum(albumId);
 
-    if (!album.photos) {
-      await album.getPhotos();
-    }
+    if (!album.photos) await album.getPhotos();
 
     return View.toggleAlbumPhotos(album);
   }
 
+  /**
+   * Toggles favorite photo in UI and state.
+   * @param {HTMLElement} button 
+   */
   const toggleFavoritePhoto = button => {
     const element = button.closest(`.${View.selectors.photo}`);
     const id = parseInt(element.dataset.id);
@@ -298,7 +305,7 @@ const photolog = (() => {
         return View.toggleUserAlbums(e.target.closest(`.${View.selectors.user}`).dataset.id);
 
       case e.target.closest(`.${View.selectors.photosToggleButton}`) && true:
-        return getAlbumPhotos(e);
+        return getAlbumPhotos(e.target.closest(`.${View.selectors.album}`));
 
       case e.target.closest(`.${View.selectors.favoriteToggleButton}`) && true:
         return toggleFavoritePhoto(e.target.closest(`.${View.selectors.favoriteToggleButton}`));
