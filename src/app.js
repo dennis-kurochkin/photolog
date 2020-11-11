@@ -176,15 +176,23 @@ class View {
     photosToggleButton: 'js-album-toggle',
     favoriteToggleButton: 'js-toggle-favorite',
     favoriteListItem: 'js-favorite-item',
+    favoriteItemToggle: 'js-favorite-item-toggle',
     openPhotoLink: 'js-open-photo',
     popup: 'js-popup',
     popupCloseButton: 'js-popup-close',
   }
 
+  /**
+   * Clears main container in the UI.
+   */
   static clearMain() {
     return this.elements.main.innerHTML = '';
   }
 
+  /**
+   * Opens catalog tab.
+   * @param {array} users 
+   */
   static openCatalogTab(users) {
     this.clearMain();
     this.elements.catalogButton.classList.add('active');
@@ -192,6 +200,10 @@ class View {
     this.renderUsers(users);
   }
 
+  /**
+   * Opens favorites tab.
+   * @param {array} favorites 
+   */
   static openFavoritesTab(favorites) {
     this.clearMain();
     this.elements.favoritesButton.classList.add('active');
@@ -246,6 +258,10 @@ class View {
     });
   }
 
+  /**
+   * Renders favorites photos list in the UI.
+   * @param {array} favorites 
+   */
   static renderFavorites(favorites) {
     const favoritesMarkup = favorites.reduce((favorites, favorite) => favorites += /*html*/`
       <div class="${this.selectors.favoriteListItem} album user__album" data-id="${favorite.id}">
@@ -253,6 +269,9 @@ class View {
           <h3 class="album__title">
             <a href="${favorite.url}" class="${this.selectors.openPhotoLink}" title="${favorite.title}">${favorite.title}</a>
           </h3>
+          <button class="${this.selectors.favoriteItemToggle} photo__btn-favorite photo__btn-favorite--static active">
+            <img src="images/icon-star.svg" width="20" height="20" alt="" aria-hidden="true">
+          </button>
         </div>
       </div>
       `, '');
@@ -399,8 +418,25 @@ const photolog = (() => {
    */
   const openPhotoInPopUp = (e, link) => {
     e.preventDefault();
+
     View.renderPhotoPopUp(link.getAttribute('href'), link.getAttribute('title'));
   }
+
+  /**
+   * Toggles favorite list item in UI and state.
+   * @param {HTMLElement} button 
+   */
+  const toggleFavoriteListItem = button => {
+    const photoElement = button.closest(`.${View.selectors.favoriteListItem}`);
+    const photoId = photoElement.dataset.id;
+    const photoIndexInState = state.favorites.findIndex(statePhoto => photoId === statePhoto.id);
+
+    state.favorites.splice(photoIndexInState, 1);
+    persistFavorites();
+
+    photoElement.remove();
+  }
+
 
   /**
    * Delegates events.
@@ -441,6 +477,10 @@ const photolog = (() => {
       case e.target.closest(`.${View.selectors.popupCloseButton}`) && true:
         return View.removePhotoPopUp();
 
+      // Favorite list item toggle button click
+      case e.target.closest(`.${View.selectors.favoriteItemToggle}`) && true:
+        return toggleFavoriteListItem(e.target.closest(`.${View.selectors.favoriteItemToggle}`));
+
       default:
         break;
     }
@@ -469,7 +509,7 @@ const photolog = (() => {
 
 })();
 
-
+// Initialize app when DOM is loaded
 window.addEventListener('DOMContentLoaded', () => {
   photolog.init();
 });

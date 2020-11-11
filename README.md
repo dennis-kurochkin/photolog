@@ -31,9 +31,18 @@
 
 ### Что я использовал
 
-* ES6 (IIFE, Async / Await, Classes, Template Strings)
+* JavaScript & ESNext: 
+  * IIFE
+  * Async / Await
+  * Classes, static methods and properties
+  * Template Strings
+  * Event Delegation
+  * local storage
 * JSDoc
 * Sass
+* App state
+* Global constants
+* MVC architecture
 
 
 ## Полезные ссылки

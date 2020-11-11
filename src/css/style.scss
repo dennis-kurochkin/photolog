@@ -54,17 +54,17 @@ body {
     border: 0;
     border-radius: 0;
     transition: opacity .3s;
-    
+
     &:hover,
     &:focus {
       opacity: 0.8;
     }
-    
+
     &:focus {
       outline: 2px dashed var(--color-black);
       outline-offset: 2px;
     }
-    
+
     &.active {
       background: var(--color-text);
     }
@@ -229,6 +229,10 @@ body {
     border-radius: 50%;
     filter: grayscale(100%);
 
+    &--static {
+      position: static;
+    }
+
     &:hover,
     &:active {
       opacity: 0.8;
@@ -237,6 +241,11 @@ body {
     &:focus {
       outline: 2px dashed var(--color-black);
       outline-offset: 2px;
+    }
+
+    &.active {
+      filter: grayscale(0%);
+      opacity: 1;
     }
   }
 
