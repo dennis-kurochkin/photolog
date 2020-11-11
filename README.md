@@ -12,7 +12,7 @@
 
 Интерактивный список пользователей, их альбомов и фотографий на нативном JavaScript.
 
-<a href="https://dennis-kurochkin.github.io/preview/photolog/index.html" target="_blank" rel="noopener noreferrer">🔍 Посмотреть как работает</a>
+<a href="https://dennis-kurochkin.github.io/preview/photolog/" target="_blank" rel="noopener noreferrer">🔍 Посмотреть как работает</a>
 
 
 ## Содержание
