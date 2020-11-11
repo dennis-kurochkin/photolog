@@ -471,14 +471,22 @@ body {
   -webkit-transition: opacity .3s;
   transition: opacity .3s;
   border-radius: 50%;
+  -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
 }
 
-.photo__btn-favorite:hover, .photo__btn-favorite:focus {
+.photo__btn-favorite:hover, .photo__btn-favorite:active {
   opacity: 0.8;
 }
 
 .photo__btn-favorite:focus {
   outline: 2px dashed var(--color-black);
   outline-offset: 2px;
+}
+
+.photo.favorite .photo__btn-favorite {
+  -webkit-filter: grayscale(0%);
+          filter: grayscale(0%);
+  opacity: 1;
 }
 /*# sourceMappingURL=style.css.map */

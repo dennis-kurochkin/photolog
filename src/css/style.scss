@@ -223,15 +223,23 @@ body {
     border-radius: 0;
     transition: opacity .3s;
     border-radius: 50%;
+    filter: grayscale(100%);
 
     &:hover,
-    &:focus {
+    &:active {
       opacity: 0.8;
     }
-
+    
     &:focus {
       outline: 2px dashed var(--color-black);
       outline-offset: 2px;
+    }
+  }
+  
+  &.favorite {
+    .photo__btn-favorite {
+      filter: grayscale(0%);
+      opacity: 1;
     }
   }
 }

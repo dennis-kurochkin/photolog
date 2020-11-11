@@ -1,3 +1,8 @@
+/** Global app state */
+const state = {
+  favorites: []
+};
+
 /**
  * Represents a user.
  */
@@ -147,9 +152,11 @@ class View {
   static selectors = {
     user: 'js-user',
     album: 'js-album',
+    photo: 'js-photo',
     albumGallery: 'js-album-gallery',
     albumsToggleButton: 'js-user-toggle',
-    photosToggleButton: 'js-album-toggle'
+    photosToggleButton: 'js-album-toggle',
+    favoriteToggleButton: 'js-toggle-favorite'
   }
 
   /**
@@ -205,9 +212,12 @@ class View {
    */
   static getPhotosMarkup(album) {
     return album.photos.reduce((photos, photo) => photos += /*html*/`
-      <figure class="album__photo photo" data-id="${photo.id}">
-        <button class="photo__btn-favorite">
-          <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
+      <figure 
+        class="${this.selectors.photo} ${state.favorites.find(id => photo.id === id) ? 'favorite' : ''} album__photo photo" 
+        data-id="${photo.id}"
+      >
+        <button class="${this.selectors.favoriteToggleButton} photo__btn-favorite">
+          <img src="images/icon-star.svg" width="20" height="20" alt="" aria-hidden="true">
         </button>
         <img src="${photo.url}" title="${photo.title}" alt="${photo.title}">
       </figure>
@@ -241,6 +251,16 @@ class View {
  */
 const photolog = (() => {
 
+  const persistFavorites = () => {
+    localStorage.setItem('favorites', JSON.stringify(state.favorites));
+  }
+
+  const retrieveFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem('favorites'));
+
+    if (favorites) state.favorites = favorites;
+  }
+
   /**
    * Gets album photos and updates the UI.
    * @param {Event} e 
@@ -258,6 +278,15 @@ const photolog = (() => {
     return View.toggleAlbumPhotos(album);
   }
 
+  const toggleFavoritePhoto = button => {
+    const element = button.closest(`.${View.selectors.photo}`);
+    const id = parseInt(element.dataset.id);
+
+    element.classList.toggle('favorite');
+    state.favorites.push(id);
+    persistFavorites();
+  }
+
   /**
    * Delegates events.
    * @param {Event} e
@@ -271,6 +300,9 @@ const photolog = (() => {
       case e.target.closest(`.${View.selectors.photosToggleButton}`) && true:
         return getAlbumPhotos(e);
 
+      case e.target.closest(`.${View.selectors.favoriteToggleButton}`) && true:
+        return toggleFavoritePhoto(e.target.closest(`.${View.selectors.favoriteToggleButton}`));
+
       default:
         break;
     }
@@ -282,6 +314,8 @@ const photolog = (() => {
      * Initializes app.
      */
     init: async () => {
+
+      retrieveFavorites();
 
       const users = await Model.getUsers();
 
