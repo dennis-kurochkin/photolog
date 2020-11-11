@@ -229,17 +229,75 @@ body {
     &:active {
       opacity: 0.8;
     }
-    
+
     &:focus {
       outline: 2px dashed var(--color-black);
       outline-offset: 2px;
     }
   }
-  
+
   &.favorite {
     .photo__btn-favorite {
       filter: grayscale(0%);
       opacity: 1;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(#000000, 0.7);
+}
+
+.popup {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  max-height: 90vh;
+  padding: 1rem;
+  background: var(--color-white);
+  box-shadow: 0 4px 16px rgba(#000000, 0.3);
+  border-radius: 5px;
+
+  &>img {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(40%, -40%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    font-weight: 600;
+    background: var(--color-white);
+    border: 0;
+    border-radius: 0;
+    transition: opacity .3s;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(#000000, 0.3);
+
+    &:hover,
+    &:active {
+      opacity: 0.8;
+    }
+
+    &:focus {
+      outline: 2px dashed var(--color-black);
+      outline-offset: 2px;
     }
   }
 }

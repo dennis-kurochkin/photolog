@@ -62,7 +62,7 @@
 - [x] Get and list photos for albums in the UI
 - [x] Add photo title
 - [x] Add favorite photos thing, write 'em to local storage
-- [ ] Add pop-up by click to every image 
+- [x] Add pop-up by click to every image 
 - [ ] Add clickable 'Catalog' and 'Favorite' links
 - [ ] No page reloads
 - [ ] In favorites page make a list of photos with just titles, on click show the photo full screen, add star there too

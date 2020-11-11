@@ -1,4 +1,4 @@
-/** Global app state */
+/** Global app state. */
 const state = {
   favorites: []
 };
@@ -143,6 +143,8 @@ class View {
   * DOM elements.
   */
   static elements = {
+    app: document.querySelector('#app'),
+    wrapper: document.querySelector('.js-wrapper'),
     main: document.querySelector('.js-main')
   };
 
@@ -156,7 +158,10 @@ class View {
     albumGallery: 'js-album-gallery',
     albumsToggleButton: 'js-user-toggle',
     photosToggleButton: 'js-album-toggle',
-    favoriteToggleButton: 'js-toggle-favorite'
+    favoriteToggleButton: 'js-toggle-favorite',
+    openPhotoLink: 'js-open-photo',
+    popup: 'js-popup',
+    popupCloseButton: 'js-popup-close',
   }
 
   /**
@@ -219,7 +224,9 @@ class View {
         <button class="${this.selectors.favoriteToggleButton} photo__btn-favorite">
           <img src="images/icon-star.svg" width="20" height="20" alt="" aria-hidden="true">
         </button>
-        <img src="${photo.url}" title="${photo.title}" alt="${photo.title}">
+        <a href="${photo.url}" class="${this.selectors.openPhotoLink}" title="${photo.title}">
+          <img src="${photo.url}" title="${photo.title}" alt="${photo.title}">
+        </a>
       </figure>
     `, '');
   }
@@ -243,6 +250,33 @@ class View {
     albumElement
       .querySelector(`.${this.selectors.albumGallery}`)
       .insertAdjacentHTML('beforeend', this.getPhotosMarkup(album))
+  }
+
+  /**
+   * Renders pop-up with photo in the UI.
+   * @param {string} url 
+   * @param {string} title 
+   */
+  static renderPhotoPopUp(url, title) {
+    const markup = /*html*/`
+      <div class="${this.selectors.popup} overlay">
+        <div class="popup">
+          <button class="${this.selectors.popupCloseButton} popup__btn-close" title="Закрыть всплывающее окно">
+            <img src="images/close.svg" width="20" height="20" alt="" aria-hidden="true">
+          </button>
+          <img src="${url}" title="${title}" alt="${title}">
+        </div>
+      </div>
+    `;
+
+    this.elements.app.insertAdjacentHTML('beforeend', markup)
+  }
+
+  /**
+   * Removes photo from the UI.
+   */
+  static removePhotoPopUp() {
+    document.querySelector(`.${this.selectors.popup}`).remove();
   }
 }
 
@@ -287,11 +321,30 @@ const photolog = (() => {
    */
   const toggleFavoritePhoto = button => {
     const element = button.closest(`.${View.selectors.photo}`);
-    const id = parseInt(element.dataset.id);
+    const photoId = parseInt(element.dataset.id);
+    const isFavorite = state.favorites.find(id => photoId === id);
+
+    if (isFavorite) {
+      const index = state.favorites.findIndex(id => photoId === id);
+
+      state.favorites.splice(index, 1);
+    } else {
+      state.favorites.push(photoId)
+    }
+
+    persistFavorites();
 
     element.classList.toggle('favorite');
-    state.favorites.push(id);
-    persistFavorites();
+  }
+
+  /**
+   * Opens photo in pop-up.
+   * @param {Event} e
+   * @param {HTMLElement} link 
+   */
+  const openPhotoInPopUp = (e, link) => {
+    e.preventDefault();
+    View.renderPhotoPopUp(link.getAttribute('href'), link.getAttribute('title'));
   }
 
   /**
@@ -301,14 +354,25 @@ const photolog = (() => {
   const delegateEvents = e => {
     switch (true) {
 
+      // Open albums button clicked
       case e.target.closest(`.${View.selectors.albumsToggleButton}`) && true:
         return View.toggleUserAlbums(e.target.closest(`.${View.selectors.user}`).dataset.id);
 
+      // Open photos button clicked
       case e.target.closest(`.${View.selectors.photosToggleButton}`) && true:
         return getAlbumPhotos(e.target.closest(`.${View.selectors.album}`));
 
+      // Add to favorite button clicked
       case e.target.closest(`.${View.selectors.favoriteToggleButton}`) && true:
         return toggleFavoritePhoto(e.target.closest(`.${View.selectors.favoriteToggleButton}`));
+
+      // Open pop-up button clicked
+      case e.target.closest(`.${View.selectors.openPhotoLink}`) && true:
+        return openPhotoInPopUp(e, e.target.closest(`.${View.selectors.openPhotoLink}`));
+
+      // Close pop-up button clicked
+      case e.target.closest(`.${View.selectors.popupCloseButton}`) && true:
+        return View.removePhotoPopUp();
 
       default:
         break;
@@ -328,7 +392,7 @@ const photolog = (() => {
 
       View.renderUsers(users);
 
-      View.elements.main.addEventListener('click', e => {
+      View.elements.app.addEventListener('click', e => {
         delegateEvents(e);
       });
 
