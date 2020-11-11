@@ -1,5 +1,3 @@
-state = {};
-
 /**
  * Represents a user.
  */
@@ -29,6 +27,14 @@ class User {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  /**
+   * Gets album by ID.
+   * @param {number} albumId Album ID
+   */
+  getAlbum(albumId) {
+    return this.albums.find(album => album.id === albumId);
   }
 }
 
@@ -86,6 +92,12 @@ class Photo {
  * Represents app main model.
  */
 class Model {
+  /** Users property. */
+  static users = [];
+
+  /**
+   * Gets all the users.
+   */
   static async getUsers() {
     try {
       const response = await fetch('https://json.medrating.org/users/');
@@ -99,13 +111,21 @@ class Model {
         await user.getAlbums();
       }
 
-      state.users = await users;
+      this.users = await users;
 
-      return state.users;
+      return this.users;
 
     } catch (e) {
       console.error(e);
     }
+  }
+
+  /**
+   * Gets user by ID.
+   * @param {number} userId User ID.
+   */
+  static getUser(userId) {
+    return this.users.find(user => user.id === userId);
   }
 };
 
@@ -202,6 +222,10 @@ class View {
     document.querySelector(`.${this.selectors.user}[data-id="${userId}"]`).classList.toggle('open');
   }
 
+  /**
+   * Toggles album photos visibility and updates the UI.
+   * @param {Album} album 
+   */
   static toggleAlbumPhotos(album) {
     const albumElement = document.querySelector(`.${this.selectors.album}[data-id="${album.id}"]`);
 
@@ -217,42 +241,58 @@ class View {
  */
 const photolog = (() => {
 
+  /**
+   * Gets album photos and updates the UI.
+   * @param {Event} e 
+   */
+  const getAlbumPhotos = async (e) => {
+    const targetButton = e.target.closest(`.${View.selectors.album}`);
+    const albumId = parseInt(targetButton.closest(`.${View.selectors.album}`).dataset.id);
+    const userId = parseInt(targetButton.closest(`.${View.selectors.user}`).dataset.id);
+    const album = Model.getUser(userId).getAlbum(albumId);
+
+    if (!album.photos) {
+      await album.getPhotos();
+    }
+
+    return View.toggleAlbumPhotos(album);
+  }
+
+  /**
+   * Delegates events.
+   * @param {Event} e
+   */
+  const delegateEvents = e => {
+    switch (true) {
+
+      case e.target.closest(`.${View.selectors.albumsToggleButton}`) && true:
+        return View.toggleUserAlbums(e.target.closest(`.${View.selectors.user}`).dataset.id);
+
+      case e.target.closest(`.${View.selectors.photosToggleButton}`) && true:
+        return getAlbumPhotos(e);
+
+      default:
+        break;
+    }
+  }
+
   return {
+
+    /** 
+     * Initializes app.
+     */
     init: async () => {
 
       const users = await Model.getUsers();
 
       View.renderUsers(users);
 
-      const getAlbumPhotos = async e => {
-        const targetButton = e.target.closest(`.${View.selectors.album}`);
-        const albumId = parseInt(targetButton.closest(`.${View.selectors.album}`).dataset.id);
-        const userId = parseInt(targetButton.closest(`.${View.selectors.user}`).dataset.id);
-        const user = state.users.find(user => user.id === userId);
-        const album = user.albums.find(album => album.id === albumId);
-
-        if (!album.photos) {
-          await album.getPhotos();
-        }
-
-        return View.toggleAlbumPhotos(user.albums.find(album => album.id === albumId));
-      }
-
       View.elements.main.addEventListener('click', e => {
-        switch (true) {
-
-          case e.target.closest(`.${View.selectors.albumsToggleButton}`) && true:
-            return View.toggleUserAlbums(e.target.closest(`.${View.selectors.user}`).dataset.id);
-
-          case e.target.closest(`.${View.selectors.photosToggleButton}`) && true:
-            getAlbumPhotos(e);
-
-          default:
-            break;
-        }
-      })
+        delegateEvents(e);
+      });
 
     }
+
   }
 
 })();
