@@ -209,7 +209,7 @@ class View {
         <button class="photo__btn-favorite">
           <img src="images/icon-star-grey.svg" width="20" height="20" alt="" aria-hidden="true">
         </button>
-        <img src="${photo.url}" alt="${photo.title}">
+        <img src="${photo.url}" title="${photo.title}" alt="${photo.title}">
       </figure>
     `, '');
   }

@@ -60,7 +60,7 @@
 - [x] Get and list users in the UI
 - [x] Get and list albums for users in the UI
 - [x] Get and list photos for albums in the UI
-- [ ] Add image title
+- [x] Add photo title
 - [ ] Add favorite photos thing, write 'em to local storage
 - [ ] Add pop-up by click to every image 
 - [ ] Add clickable 'Catalog' and 'Favorite' links
