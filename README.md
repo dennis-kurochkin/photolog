@@ -61,7 +61,7 @@
 - [x] Add pop-up by click to every image 
 - [x] Add clickable 'Catalog' and 'Favorite' links
 - [x] No page reloads
-- [ ] In favorites page make a list of photos with just titles, on click show the photo full screen, add star there too
+- [x] In favorites page make a list of photos with just titles, on click show the photo full screen, add star there too
 - [x] Works in chrome and firefox
 
 
